@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: "poppins";
+}
+body {
+  width: max-content;
+  min-width: 100vw;
+}
