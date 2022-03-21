@@ -3,7 +3,11 @@ import ironman from "../images/ironman.jpg";
 import hulk from "../images/hulk.jpg";
 import batman from "../images/ironman.jpg";
 import { updateCard } from "./firebase";
+import { updateCardLocally } from "./redux/cardActions";
+import { useDispatch } from "react-redux";
 const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
+  const dispatch = useDispatch();
+
   const heading = useRef(null);
   const description = useRef(null);
   const assignee = useRef(null);
@@ -11,7 +15,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
   const priority = useRef(null);
   const deadline = useRef(null);
 
-  const getUpdatedValues = (e) => {
+  const updatedValues = (e) => {
     const cardDetails = {
       heading: heading.current.innerText,
       description: description.current.innerText,
@@ -25,7 +29,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
       hours: new Date().getHours(),
       minutes: new Date().getMinutes(),
     };
-    updateCard(e, cardDetails);
+    dispatch(updateCardLocally(e, cardDetails));
   };
   return (
     <div
@@ -38,7 +42,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
         cardid={cardid}
         onClick={(e) => {
           setPopup(!isPopupOpen);
-          getUpdatedValues(e);
+          updatedValues(e);
         }}
         className="fixed z-20 top-0 left-0 bg-black opacity-30 h-screen w-screen"
       ></div>

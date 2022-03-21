@@ -2,9 +2,13 @@ import React, { useRef } from "react";
 import Card from "./Card";
 import { Droppable } from "react-beautiful-dnd";
 import { removeList, addCard } from "./firebase";
-import { updateListHeading } from "./firebase";
-
+// import { updateListHeading } from "./firebase";
+import { addCardLocally } from "./redux/cardActions";
+import { updateListHeading, removeListLocally } from "./redux/listActions";
+import { useDispatch } from "react-redux";
 const List = ({ listID, index, cards, list }) => {
+  const dispatch = useDispatch();
+
   const heading = useRef(null);
   return (
     <Droppable droppableId={String(listID)} index={index}>
@@ -20,11 +24,13 @@ const List = ({ listID, index, cards, list }) => {
               onKeyDown={(e) => {
                 if (e.keyCode === 13) {
                   e.preventDefault();
+                  dispatch(updateListHeading(e, heading.current.innerText));
                   e.target.blur();
-                  updateListHeading(e, heading.current.innerText);
                 }
               }}
-              onBlur={(e) => updateListHeading(e, heading.current.innerText)}
+              onBlur={(e) =>
+                dispatch(updateListHeading(e, heading.current.innerText))
+              }
               ref={heading}
               id={listID}
               contentEditable="true"
@@ -36,7 +42,7 @@ const List = ({ listID, index, cards, list }) => {
             <div className="flex items-center gap-4">
               <i
                 id={listID}
-                onClick={(e) => removeList(e)}
+                onClick={(e) => dispatch(removeListLocally(e))}
                 className="fa-solid fa-trash"
               ></i>
               <p className="bg-black text-white px-2 rounded-md">
@@ -51,14 +57,22 @@ const List = ({ listID, index, cards, list }) => {
               cardID={card.id}
               index={index}
               cardDetail={card}
-              key={index}
+              list={list}
+              /* key has to be card id or else dragging will not work.
+              // IMP!!!
+               Otherwise React will reuse the elements upon reordering 
+               the items so that it will confuse the draggableAPI update algorithm.
+                The key has to be unique to that element and stay constant.
+                // 
+              */
+              key={card.id}
             />
           ))}
           {provided.placeholder}
           {/* add new card */}
           <div
             id={listID}
-            onClick={(e) => addCard(e)}
+            onClick={(e) => dispatch(addCardLocally(e))}
             className="h-[50px] bg-white mb-8 cursor-pointer rounded-lg flex items-center justify-center text-{2}xl "
           >
             <i className="fa-solid fa-plus mr-4"></i>Task

@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import List from "./List";
 import { DragDropContext } from "react-beautiful-dnd";
-import { getLiveDataFromFirebase } from "./redux/actions";
 import { useSelector, useDispatch } from "react-redux";
-import { addList, persistCardOrder } from "./firebase";
-
+import { getMainList } from "./redux/mainList/mainListActions";
+import { addListLocally } from "./redux/listActions";
+import { handleDragDrop } from "./redux/cardActions";
 const ProjectLists = () => {
   const dispatch = useDispatch();
 
   // dispatching
   useEffect(() => {
-    dispatch(getLiveDataFromFirebase());
+    dispatch(getMainList());
   }, []);
 
   // getting redux store state
-  let state = useSelector((state) => state);
-  let lists = state.lists;
+  let mainList = useSelector((state) => state.mainList);
+  const lists = mainList[0]?.listCollection;
   const handleDragEnd = (result) => {
     const { destination, source, draggableId, type } = result;
 
@@ -36,12 +36,14 @@ const ProjectLists = () => {
     if (!destination) {
       return;
     }
-    persistCardOrder(
-      listSourceId,
-      listDestinationId,
-      cardSourceIndex,
-      cardDestinationIndex,
-      cardId
+    dispatch(
+      handleDragDrop(
+        listSourceId,
+        listDestinationId,
+        cardSourceIndex,
+        cardDestinationIndex,
+        cardId
+      )
     );
   };
   return (
@@ -57,19 +59,22 @@ const ProjectLists = () => {
       </p>
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex gap-8 ">
-          {lists.map((list, index) => (
-            <List
-              list={list}
-              listID={list.id}
-              index={index}
-              key={index}
-              cards={list.cards}
-            />
-          ))}
+          {lists?.map((list, index) => {
+            return (
+              <List
+                list={list}
+                listID={list.id}
+                index={index}
+                key={index}
+                cards={list.cards}
+              />
+            );
+          })}
           {/* add new list */}
           <div
-            onClick={() => {
-              addList();
+            id={lists?.id}
+            onClick={(e) => {
+              dispatch(addListLocally(e));
             }}
             className="h-[40px] w-[300px] bg-white mb-8 cursor-pointer rounded-lg flex items-center justify-center text-{2}xl "
           >

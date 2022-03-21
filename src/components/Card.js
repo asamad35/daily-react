@@ -4,9 +4,11 @@ import hulk from "../images/hulk.jpg";
 import batman from "../images/batman.jpg";
 import PopUp from "./popUp";
 import { Draggable } from "react-beautiful-dnd";
-import { removeCard } from "./firebase";
+import { useDispatch } from "react-redux";
+import { removeCardLocally } from "./redux/cardActions";
 
-const Card = ({ cardID, index, cardDetail, listID }) => {
+const Card = ({ cardID, index, cardDetail, listID, list }) => {
+  const disptach = useDispatch();
   const [isPopupOpen, setPopup] = useState(false);
 
   const character =
@@ -19,7 +21,11 @@ const Card = ({ cardID, index, cardDetail, listID }) => {
       : ironman;
   return (
     <>
-      <Draggable draggableId={String(cardID)} index={index} id={cardID}>
+      <Draggable
+        draggableId={String(cardID)}
+        index={index}
+        listTitle={list.title}
+      >
         {(provided) => (
           <div
             className=" mb-6 relative "
@@ -41,7 +47,7 @@ const Card = ({ cardID, index, cardDetail, listID }) => {
                 <i
                   id={listID}
                   cardid={cardID}
-                  onClick={(e) => removeCard(e)}
+                  onClick={(e) => disptach(removeCardLocally(e))}
                   className="fa-solid fa-trash basis-[10%]"
                 ></i>
               </div>
