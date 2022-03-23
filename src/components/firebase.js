@@ -34,18 +34,64 @@ export const db = getFirestore();
 const mainListsRef = collection(db, "main lists");
 
 // update firebase state
-export const updateFirebaseDocument = (state) => {
+export const updateFirebaseDocument = (state, boardId) => {
   getDocs(mainListsRef).then((snapshot) => {
-    const document = snapshot.docs.find(
-      (doc) => doc.data().title === "daily work"
-    );
-    console.log(document);
+    const document = snapshot.docs.find((doc) => doc.data().id === boardId);
     const docRef = doc(db, "main lists", document.id);
     getDoc(docRef).then((doc) => {
       updateDoc(docRef, {
         ...doc.data(),
-        ...state[0],
+        ...state[boardId],
       });
     });
   });
 };
+
+// add board in firebase
+export const addBoardFirebase = (index) => {
+  addDoc(mainListsRef, {
+    title: "new board",
+    id: index,
+    listCollection: [],
+  });
+};
+
+// remove board in firebase
+export const removeBoardFirebase = (id) => {
+  getDocs(mainListsRef).then((snapshot) => {
+    // const document = snapshot.docs.find((doc) => doc.data().id === id);
+    const targetBoardId = snapshot.docs.find(
+      (boardRef) => boardRef.data().id === id
+    ).id;
+    const docRef = doc(db, "main lists", targetBoardId);
+
+    deleteDoc(docRef).then((res) => orderingBoardIdFirebase());
+  });
+};
+
+// ordering board id in firebase
+export const orderingBoardIdFirebase = () => {
+  getDocs(mainListsRef).then((snapshot) => {
+    snapshot.docs.forEach((board, index) => {
+      const boardId = board.id;
+      const docRef = doc(db, "main lists", boardId);
+      updateDoc(docRef, {
+        ...board.data(),
+        id: index,
+      });
+    });
+  });
+};
+
+export const updateBoardTitleFirebase = (boardId, boardTitle) => {
+  getDocs(mainListsRef).then((snapshot) => {
+    const document = snapshot.docs.find((board) => board.data().id === boardId);
+    console.log(document.data());
+    const docRef = doc(db, "main lists", document.id);
+    updateDoc(docRef, {
+      ...document.data(),
+      title: boardTitle,
+    });
+  });
+};
+//

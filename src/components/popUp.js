@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import ironman from "../images/ironman.jpg";
 import hulk from "../images/hulk.jpg";
-import batman from "../images/ironman.jpg";
+import batman from "../images/batman.jpg";
 import { updateCard } from "./firebase";
 import { updateCardLocally } from "./redux/cardActions";
 import { useDispatch } from "react-redux";
@@ -14,6 +14,33 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
   const status = useRef(null);
   const priority = useRef(null);
   const deadline = useRef(null);
+
+  const character =
+    cardDetail.assignee === "ironman" || cardDetail.assignee === "Ironman"
+      ? ironman
+      : cardDetail.assignee === "batman" || cardDetail.assignee === "Batman"
+      ? batman
+      : cardDetail.assignee === "hulk" || cardDetail.assignee === "Hulk"
+      ? hulk
+      : ironman;
+
+  const priorityIcon =
+    cardDetail.priority === "high"
+      ? "fa-fire-flame-curved"
+      : cardDetail.priority === "medium"
+      ? "fa-fan"
+      : cardDetail.priority === "low"
+      ? "fa-flower-daffodil"
+      : "fa-fire-flame-curved";
+
+  const priorityColor =
+    cardDetail.priority === "high"
+      ? "bg-red-500"
+      : cardDetail.priority === "medium"
+      ? "bg-orange-500"
+      : cardDetail.priority === "low"
+      ? "bg-green-500"
+      : "bg-red-500";
 
   const updatedValues = (e) => {
     const cardDetails = {
@@ -102,8 +129,8 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
               <div className="flex items-center gap-2">
                 <img
                   className="w-[30px] h-[30px] flex rounded-full overflow-hidden"
-                  src={ironman}
-                  alt="ironman"
+                  src={character}
+                  alt={cardDetail.assignee}
                 />
                 <p
                   suppressContentEditableWarning
@@ -151,21 +178,25 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
             </h1>
             <div className=" hover:bg-slate-200 transition-all duration-100 flex-1 mr-20">
               <div className="flex items-center gap-4">
-                <span
-                  suppressContentEditableWarning
-                  contentEditable="true"
-                  onKeyDown={(e) => {
-                    if (e.keyCode === 13) {
-                      e.preventDefault();
-                      e.target.blur();
-                    }
-                  }}
-                  ref={priority}
-                  className=" text-white text-sm  mr-2 py-1 px-2 rounded-md bg-red-500"
+                <div
+                  className={`py-1 pl-2 rounded-md text-white ${priorityColor}`}
                 >
-                  <i className="fa-solid fa-fire-flame-curved pr-2"></i>
-                  {cardDetail.priority ? cardDetail.priority : "Add priority"}
-                </span>
+                  <i className={`fa-solid ${priorityIcon} pr-2`}></i>
+                  <span
+                    suppressContentEditableWarning
+                    contentEditable="true"
+                    onKeyDown={(e) => {
+                      if (e.keyCode === 13) {
+                        e.preventDefault();
+                        e.target.blur();
+                      }
+                    }}
+                    ref={priority}
+                    className=" text-white text-sm outline-none mr-2 rounded-md "
+                  >
+                    {cardDetail.priority ? cardDetail.priority : "Add priority"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -179,7 +210,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
               <div className="flex items-center gap-4">
                 <span className="text-white text-sm  mr-4 bg-orange-400 py-1 px-2 rounded-md ">
                   <i className="fa-regular fa-clock pr-2"></i>
-                  Mar 26
+                  {cardDetail.month} {cardDetail.date}
                 </span>
               </div>
             </div>
@@ -192,21 +223,23 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
             </h1>
             <div className=" hover:bg-slate-200 transition-all duration-100 flex-1 mr-20">
               <div className="flex items-center gap-4">
-                <span
-                  suppressContentEditableWarning
-                  contentEditable="true"
-                  onKeyDown={(e) => {
-                    if (e.keyCode === 13) {
-                      e.preventDefault();
-                      e.target.blur();
-                    }
-                  }}
-                  ref={deadline}
-                  className="text-white text-sm  mr-4 bg-orange-400 py-1 px-2 rounded-md "
-                >
-                  <i className="fa-regular fa-clock pr-2"></i>
-                  {cardDetail.deadline ? cardDetail.deadline : "Add deadline"}
-                </span>
+                <div className="bg-orange-400 py-1 px-2 rounded-md">
+                  <i className="fa-regular fa-clock text-white pr-2"></i>
+                  <span
+                    suppressContentEditableWarning
+                    contentEditable="true"
+                    onKeyDown={(e) => {
+                      if (e.keyCode === 13) {
+                        e.preventDefault();
+                        e.target.blur();
+                      }
+                    }}
+                    ref={deadline}
+                    className="text-white text-sm rounded-md py-1 pr-2 outline-none "
+                  >
+                    {cardDetail.deadline ? cardDetail.deadline : "Add deadline"}
+                  </span>
+                </div>
               </div>
             </div>
           </div>

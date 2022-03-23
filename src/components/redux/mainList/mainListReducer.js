@@ -1,12 +1,13 @@
 import { CONSTANTS } from "../CONSTANTS";
 import uniqid from "uniqid";
-import { updateFirebaseDocument } from "../../firebase";
+import {
+  updateFirebaseDocument,
+  addBoardFirebase,
+  removeBoardFirebase,
+  updateBoardTitleFirebase,
+} from "../../firebase";
 
 let initialState = [];
-
-const getTargetList = (targetListId, state) => {
-  return state[0].listCollection.find((list) => list.id === targetListId);
-};
 
 const newCard = () => ({
   heading: "Add card heading",
@@ -26,19 +27,31 @@ const newList = () => ({
   id: uniqid(),
   cards: [newCard()],
 });
-
+// initial board id
+let boardIndex = 0;
 const mainListReducer = (state = initialState, action) => {
+  const getTargetList = (targetListId, state) => {
+    return state[boardIndex].listCollection.find(
+      (list) => list.id === targetListId
+    );
+  };
   switch (action.type) {
-    case CONSTANTS.GET_MAIN_LIST:
+    case CONSTANTS.SET_BOARD_ID: {
+      boardIndex = action.payload;
+      return state;
+    }
+    //////////////////////////////////////////////////////////////////////////////
+    case CONSTANTS.GET_MAIN_LIST: {
       state = action.payload;
       return state;
+    }
     //////////////////////////////////////////////////////////////////////////////
     case CONSTANTS.ADD_CARD_LOCALLY: {
       const targetListId = action.payload.id;
       const targetList = getTargetList(targetListId, state);
       targetList.cards.push(newCard());
-      console.log(state);
-      updateFirebaseDocument(state);
+      // state.push({ id: 2, title: "new board" });
+      updateFirebaseDocument(state, boardIndex);
 
       /*
       if we add or remove properties from an object the object refrence in memory will not change, hence the state will update but the component will not re render.
@@ -57,7 +70,7 @@ const mainListReducer = (state = initialState, action) => {
         (card) => card.id === targetCardId
       );
       targetList.cards.splice(targetCardIndex, 1);
-      updateFirebaseDocument(state);
+      updateFirebaseDocument(state, boardIndex);
       // creating a deep copy
       const newState = JSON.parse(JSON.stringify(state));
       return newState;
@@ -77,7 +90,7 @@ const mainListReducer = (state = initialState, action) => {
       targetList.cards.splice(targetCardIndex, 0, {
         ...action.payload.cardDetails,
       });
-      updateFirebaseDocument(state);
+      updateFirebaseDocument(state, boardIndex);
       // creating a deep copy
       const newState = JSON.parse(JSON.stringify(state));
       return newState;
@@ -87,26 +100,26 @@ const mainListReducer = (state = initialState, action) => {
       const targetListId = action.payload.e.target.id;
       const targetList = getTargetList(targetListId, state);
       targetList.heading = action.payload.listHeading;
-      updateFirebaseDocument(state);
+      updateFirebaseDocument(state, boardIndex);
       const newState = JSON.parse(JSON.stringify(state));
       return newState;
     }
     //////////////////////////////////////////////////////////////////////////////
     case CONSTANTS.ADD_LIST_LOCALLY: {
-      state[0].listCollection.push(newList());
-      updateFirebaseDocument(state);
+      state[boardIndex].listCollection.push(newList());
+      updateFirebaseDocument(state, boardIndex);
       const newState = JSON.parse(JSON.stringify(state));
       return newState;
     }
     //////////////////////////////////////////////////////////////////////////////
     case CONSTANTS.REMOVE_LIST_LOCALLY: {
-      const listCollection = state[0].listCollection;
+      const listCollection = state[boardIndex].listCollection;
       const targetListId = action.payload.id;
       const targetListIndex = listCollection.findIndex(
         (list) => list.id === targetListId
       );
       listCollection.splice(targetListIndex, 1);
-      updateFirebaseDocument(state);
+      updateFirebaseDocument(state, boardIndex);
       const newState = JSON.parse(JSON.stringify(state));
       return newState;
     }
@@ -127,7 +140,7 @@ const mainListReducer = (state = initialState, action) => {
           const targetCard = cards.splice(cardSourceIndex, 1);
           // add card
           cards.splice(cardDestinationIndex, 0, ...targetCard);
-          updateFirebaseDocument(state);
+          updateFirebaseDocument(state, boardIndex);
           const newState = JSON.parse(JSON.stringify(state));
           return newState;
         }
@@ -142,13 +155,47 @@ const mainListReducer = (state = initialState, action) => {
           // add card
           destinationListCards.splice(cardDestinationIndex, 0, ...targetCard);
 
-          updateFirebaseDocument(state);
+          updateFirebaseDocument(state, boardIndex);
           const newState = JSON.parse(JSON.stringify(state));
           return newState;
         }
       }
       break;
+    //////////////////////////////////////////////////////////////////////////////
+    case CONSTANTS.ADD_BOARD: {
+      const id = action.payload;
+      state.push({
+        id: id,
+        title: "new list",
+        listCollection: [],
+      });
+      addBoardFirebase(id);
+      const newState = JSON.parse(JSON.stringify(state));
+      return newState;
+    }
 
+    case CONSTANTS.REMOVE_BOARD: {
+      const id = action.payload;
+      state.splice(id, 1);
+      removeBoardFirebase(id);
+      // ordering board id
+      state.forEach((board, index) => {
+        board.id = index;
+      });
+      // ordering firebse id
+      // orderingBoardIdFirebase();
+      const newState = JSON.parse(JSON.stringify(state));
+      return newState;
+    }
+    //////////////////////////////////////////////////////////////////////////////
+    case CONSTANTS.UPDATE_BOARD_TITLE: {
+      const boardId = +action.payload.e.target.id;
+      const boardTitle = action.payload.title;
+      state[boardId].title = boardTitle;
+      updateBoardTitleFirebase(boardId, boardTitle);
+      const newState = JSON.parse(JSON.stringify(state));
+      return newState;
+    }
     default:
       return state;
   }
