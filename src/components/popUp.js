@@ -27,7 +27,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
   const priorityIcon =
     cardDetail.priority === "high"
       ? "fa-fire-flame-curved"
-      : cardDetail.priority === "medium"
+      : cardDetail.priority === "moderate"
       ? "fa-fan"
       : cardDetail.priority === "low"
       ? "fa-flower-daffodil"
@@ -36,7 +36,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
   const priorityColor =
     cardDetail.priority === "high"
       ? "bg-red-500"
-      : cardDetail.priority === "medium"
+      : cardDetail.priority === "moderate"
       ? "bg-orange-500"
       : cardDetail.priority === "low"
       ? "bg-green-500"

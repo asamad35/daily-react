@@ -23,7 +23,7 @@ const Card = ({ cardID, index, cardDetail, listID, list }) => {
   const priorityColor =
     cardDetail.priority === "high"
       ? "bg-red-500"
-      : cardDetail.priority === "medium"
+      : cardDetail.priority === "moderate"
       ? "bg-orange-500"
       : cardDetail.priority === "low"
       ? "bg-green-500"
@@ -32,7 +32,7 @@ const Card = ({ cardID, index, cardDetail, listID, list }) => {
   const priorityIcon =
     cardDetail.priority === "high"
       ? "fa-fire-flame-curved"
-      : cardDetail.priority === "medium"
+      : cardDetail.priority === "moderate"
       ? "fa-fan"
       : cardDetail.priority === "low"
       ? "fa-flower-daffodil"
@@ -47,7 +47,7 @@ const Card = ({ cardID, index, cardDetail, listID, list }) => {
       >
         {(provided) => (
           <div
-            className=" mb-6 relative rounded-xl shadow-[0_2px_10px_2px_rgba(0,0,0,0.1)]"
+            className=" mb-6 relative rounded-xl transition-all shadow-[0_2px_10px_2px_rgba(0,0,0,0.1)]"
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}

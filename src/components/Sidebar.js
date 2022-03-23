@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import data from "../data";
 import {
   getMainList,
   updateBoardTitle,
@@ -22,7 +23,14 @@ const Sidebar = ({ boardId, setBoardIndex }) => {
   };
 
   const state = useSelector((state) => state);
-  // const numberOfBoards = state.mainList.length - 1;
+  // state.mainList[0].id === -1 ? state : state.mainList.unshift(data);
+  // if (state.mainList[0]?.id !== 0) {
+  //   state.mainList.unshift(data);
+  //   return null;
+  // }
+
+  // state.mainList.unshift(data);
+  // console.log(state, data);
   return (
     <div className="bg-[#f1f1f2] inline-block py-12 px-8 rounded-[2.5rem] rounded-r-none">
       {/* board name */}

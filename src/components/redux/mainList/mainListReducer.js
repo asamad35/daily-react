@@ -176,6 +176,7 @@ const mainListReducer = (state = initialState, action) => {
 
     case CONSTANTS.REMOVE_BOARD: {
       const id = action.payload;
+      if (id === 0) return;
       state.splice(id, 1);
       removeBoardFirebase(id);
       // ordering board id

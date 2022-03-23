@@ -35,6 +35,7 @@ const mainListsRef = collection(db, "main lists");
 
 // update firebase state
 export const updateFirebaseDocument = (state, boardId) => {
+  if (boardId === 0) return;
   getDocs(mainListsRef).then((snapshot) => {
     const document = snapshot.docs.find((doc) => doc.data().id === boardId);
     const docRef = doc(db, "main lists", document.id);
@@ -58,6 +59,7 @@ export const addBoardFirebase = (index) => {
 
 // remove board in firebase
 export const removeBoardFirebase = (id) => {
+  if (id === 0) return;
   getDocs(mainListsRef).then((snapshot) => {
     // const document = snapshot.docs.find((doc) => doc.data().id === id);
     const targetBoardId = snapshot.docs.find(
@@ -84,6 +86,7 @@ export const orderingBoardIdFirebase = () => {
 };
 
 export const updateBoardTitleFirebase = (boardId, boardTitle) => {
+  if (boardId === 0) return;
   getDocs(mainListsRef).then((snapshot) => {
     const document = snapshot.docs.find((board) => board.data().id === boardId);
     console.log(document.data());
