@@ -43,7 +43,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="App flex py-12  px-28">
+      <div className="App flex py-12  px-12">
         <Sidebar boardId={boardId} setBoardIndex={setBoardId} />
         <div className=" bg-white flex-1 rounded-[2.5rem] pr-16 rounded-l-none">
           <ProjectLists boardId={boardId} setBoardId={setBoardId} />
