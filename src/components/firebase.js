@@ -1,7 +1,6 @@
 // Import the functions you need from the SDKs you need
-import uniqid from "uniqid";
 import { initializeApp } from "firebase/app";
-import data from "../data";
+import data from "./data";
 import {
   getFirestore,
   collection,
@@ -9,11 +8,6 @@ import {
   addDoc,
   deleteDoc,
   doc,
-  getDoc,
-  updateDoc,
-  orderBy,
-  serverTimestamp,
-  query,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -32,20 +26,10 @@ initializeApp(firebaseConfig);
 // get database
 export const db = getFirestore();
 
-// const database = getDatabase();
-// const connectedRef = ref(database, ".info/connected");
-// onValue(connectedRef, (snap) => {
-//   if (snap.val() === true) {
-//     console.log("connected");
-//   } else {
-//     console.log("not connected");
-//   }
-// });
-
 const mainListsRef = collection(db, "main lists");
+
 // update firebase state
 // export const updateFirebaseDocument = (state, boardId) => {
-//   // if (boardId === 0) return;
 //   getDocs(mainListsRef).then((snapshot) => {
 //     const document = snapshot.docs.find((doc) => doc.data().id === boardId);
 //     const docRef = doc(db, "main lists", document.id);
@@ -61,7 +45,7 @@ const mainListsRef = collection(db, "main lists");
 // // add board in firebase
 // export const addBoardFirebase = (index) => {
 //   addDoc(mainListsRef, {
-//     title: "New Board",
+//     title: "new board",
 //     id: index,
 //     listCollection: [],
 //   });
@@ -69,7 +53,6 @@ const mainListsRef = collection(db, "main lists");
 
 // // remove board in firebase
 // export const removeBoardFirebase = (id) => {
-//   if (id === 0) return;
 //   getDocs(mainListsRef).then((snapshot) => {
 //     // const document = snapshot.docs.find((doc) => doc.data().id === id);
 //     const targetBoardId = snapshot.docs.find(
@@ -96,7 +79,6 @@ const mainListsRef = collection(db, "main lists");
 // };
 
 // export const updateBoardTitleFirebase = (boardId, boardTitle) => {
-//   if (boardId === 0) return;
 //   getDocs(mainListsRef).then((snapshot) => {
 //     const document = snapshot.docs.find((board) => board.data().id === boardId);
 //     console.log(document.data());
@@ -107,13 +89,7 @@ const mainListsRef = collection(db, "main lists");
 //     });
 //   });
 // };
-//
-
-// const firstEl = {
-//   id: 0,
-// listCollection: [{…}],
-// title: "Demo",
-// };
+////////////////////////////////////////////////////
 
 export const saveInFirebase = (boardArray) => {
   boardArray.shift();

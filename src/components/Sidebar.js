@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import data from "../data";
 import {
   getMainList,
   updateBoardTitle,
@@ -23,6 +22,7 @@ const Sidebar = ({ boardId, setBoardIndex }) => {
   };
 
   const state = useSelector((state) => state);
+  // const numberOfBoards = state.mainList.length - 1;
   return (
     <div className="bg-[#f1f1f2] inline-block py-12 px-8 rounded-[2.5rem] rounded-r-none">
       {/* board name */}
@@ -66,7 +66,7 @@ const Sidebar = ({ boardId, setBoardIndex }) => {
                   suppressContentEditableWarning
                   className="p-2 outline-none "
                 >
-                  {title === "new list" ? "New Board" : title}
+                  {title}
                 </p>
                 <div className="flex-1"></div>
                 <i

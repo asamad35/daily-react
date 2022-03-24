@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import ironman from "../images/ironman.jpg";
 import hulk from "../images/hulk.jpg";
 import batman from "../images/batman.jpg";
+import { updateCard } from "./firebase";
 import { updateCardLocally } from "./redux/cardActions";
 import { useDispatch } from "react-redux";
 const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
@@ -26,7 +27,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
   const priorityIcon =
     cardDetail.priority === "high"
       ? "fa-fire-flame-curved"
-      : cardDetail.priority === "moderate"
+      : cardDetail.priority === "medium"
       ? "fa-fan"
       : cardDetail.priority === "low"
       ? "fa-flower-daffodil"
@@ -35,7 +36,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
   const priorityColor =
     cardDetail.priority === "high"
       ? "bg-red-500"
-      : cardDetail.priority === "moderate"
+      : cardDetail.priority === "medium"
       ? "bg-orange-500"
       : cardDetail.priority === "low"
       ? "bg-green-500"

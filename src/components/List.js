@@ -8,7 +8,6 @@ const List = ({ listID, index, cards, list }) => {
   const dispatch = useDispatch();
 
   const heading = useRef(null);
-  console.log("list");
   return (
     <div>
       {/* heading */}

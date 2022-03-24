@@ -8,8 +8,8 @@ import { handleDragDrop } from "./redux/cardActions";
 import { saveInFirebase } from "./redux/mainList/mainListActions";
 const ProjectLists = ({ boardId }) => {
   const dispatch = useDispatch();
-  console.log("project list");
   const spinnerDiv = document.querySelector(".spinnerDiv");
+
   // dispatching
   useEffect(() => {
     dispatch(getMainList());
@@ -45,7 +45,7 @@ const ProjectLists = ({ boardId }) => {
     <div className="ml-16">
       <div className="flex justify-between max-w-4xl">
         <h1 className="text-5xl font-semibold mt-14 mb-8">
-          {mainList[boardId]?.title}
+          {mainList[boardId]?.title || "Select a board"}
         </h1>
         <div
           onClick={() => {
@@ -57,6 +57,7 @@ const ProjectLists = ({ boardId }) => {
           <i className="fa-solid fa-save mr-4"></i> Save Progress
         </div>
       </div>
+
       <p className="font-medium mb-8">
         Use{" "}
         <span className="bg-[#F2F3F5] w-[60px] rounded-md border-[#2E4ACD] border-2 border-dashed  px-2 mx-1 inline-flex items-center justify-center  ">

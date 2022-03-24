@@ -3,14 +3,13 @@ import ProjectLists from "./components/ProjectLists";
 import { useState, useRef } from "react";
 
 function App() {
+  const [boardId, setBoardId] = useState(0);
   const spinnerDiv = useRef(null);
   const spinner = useRef(null);
   const saved = useRef(null);
   const saveFailed = useRef(null);
-  const [boardId, setBoardId] = useState(0);
-  console.log("app");
   return (
-    <div className="bg-[#DCE0E8] ">
+    <div className="bg-[#DCE0E8] relative">
       {/* spinner */}
       <div
         ref={spinnerDiv}
@@ -44,7 +43,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="App flex py-12 px-28">
+      <div className="App flex py-12  px-28">
         <Sidebar boardId={boardId} setBoardIndex={setBoardId} />
         <div className=" bg-white flex-1 rounded-[2.5rem] pr-16 rounded-l-none">
           <ProjectLists boardId={boardId} setBoardId={setBoardId} />
