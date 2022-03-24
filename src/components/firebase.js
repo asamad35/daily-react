@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBDMqSMZNmOZGn0KjtzErQ1pvilbXdNPMc",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "kanban-app-fe757.firebaseapp.com",
   projectId: "kanban-app-fe757",
   storageBucket: "kanban-app-fe757.appspot.com",
