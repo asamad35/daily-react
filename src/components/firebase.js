@@ -35,7 +35,7 @@ const mainListsRef = collection(db, "main lists");
 
 // update firebase state
 export const updateFirebaseDocument = (state, boardId) => {
-  if (boardId === 0) return;
+  // if (boardId === 0) return;
   getDocs(mainListsRef).then((snapshot) => {
     const document = snapshot.docs.find((doc) => doc.data().id === boardId);
     const docRef = doc(db, "main lists", document.id);
@@ -51,7 +51,7 @@ export const updateFirebaseDocument = (state, boardId) => {
 // add board in firebase
 export const addBoardFirebase = (index) => {
   addDoc(mainListsRef, {
-    title: "new board",
+    title: "New Board",
     id: index,
     listCollection: [],
   });

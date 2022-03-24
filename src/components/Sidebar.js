@@ -23,14 +23,6 @@ const Sidebar = ({ boardId, setBoardIndex }) => {
   };
 
   const state = useSelector((state) => state);
-  // state.mainList[0].id === -1 ? state : state.mainList.unshift(data);
-  // if (state.mainList[0]?.id !== 0) {
-  //   state.mainList.unshift(data);
-  //   return null;
-  // }
-
-  // state.mainList.unshift(data);
-  // console.log(state, data);
   return (
     <div className="bg-[#f1f1f2] inline-block py-12 px-8 rounded-[2.5rem] rounded-r-none">
       {/* board name */}
@@ -74,7 +66,7 @@ const Sidebar = ({ boardId, setBoardIndex }) => {
                   suppressContentEditableWarning
                   className="p-2 outline-none "
                 >
-                  {title}
+                  {title === "new list" ? "New Board" : title}
                 </p>
                 <div className="flex-1"></div>
                 <i
