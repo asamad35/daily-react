@@ -10,7 +10,7 @@ import { removeCardLocally } from "./redux/cardActions";
 const Card = ({ cardID, index, cardDetail, listID, list }) => {
   const disptach = useDispatch();
   const [isPopupOpen, setPopup] = useState(false);
-
+  console.log(cardDetail.imageURL);
   const character =
     cardDetail.assignee === "ironman" || cardDetail.assignee === "Ironman"
       ? ironman
@@ -52,7 +52,24 @@ const Card = ({ cardID, index, cardDetail, listID, list }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <div className="bg-white rounded-lg cursor-pointer">
+            <div className="bg-white rounded-lg cursor-pointer overflow-hidden">
+              {/* img */}
+              <div
+                onClick={() => {
+                  setPopup(!isPopupOpen);
+                }}
+                className={`${
+                  cardDetail.imageURL
+                    ? "p-4 max-h-[200px] max-w-[300px] flex m-auto "
+                    : "hidden"
+                }`}
+              >
+                <img
+                  className="cover h-full w-full"
+                  src={`${cardDetail.imageURL}`}
+                  alt=""
+                />
+              </div>
               {/* heading */}
               <div className="flex items-center">
                 <h1
@@ -79,7 +96,7 @@ const Card = ({ cardID, index, cardDetail, listID, list }) => {
                 className="px-4 pb-4"
               >
                 {/* description */}
-                <p className="pb-4 text-[15px]">
+                <p className="pb-4 text-[15px] overflow-hidden">
                   {cardDetail.description.charAt(0).toUpperCase() +
                     cardDetail.description.slice(1, 60)}
                   {cardDetail.description.length > 60 ? "..." : ""}

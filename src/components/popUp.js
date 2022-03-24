@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import ironman from "../images/ironman.jpg";
 import hulk from "../images/hulk.jpg";
 import batman from "../images/batman.jpg";
-import { updateCard } from "./firebase";
 import { updateCardLocally } from "./redux/cardActions";
 import { useDispatch } from "react-redux";
 const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
@@ -10,6 +9,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
 
   const heading = useRef(null);
   const description = useRef(null);
+  const imageURL = useRef(null);
   const assignee = useRef(null);
   const status = useRef(null);
   const priority = useRef(null);
@@ -46,6 +46,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
     const cardDetails = {
       heading: heading.current.innerText,
       description: description.current.innerText,
+      imageURL: imageURL.current.innerText,
       assignee: assignee.current.innerText,
       status: status.current.innerText,
       deadline: deadline.current.innerText,
@@ -98,7 +99,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
           </div>
           {/* description */}
           <div className="flex gap-2 items-center mb-4">
-            <i className="fa-solid fa-heading text-gray-400"></i>
+            <i className="fa-solid fa-pen text-gray-400"></i>
             <h1 className="text-xl py-0.5 px-2 w-[150px] transition-all duration-100 hover:bg-slate-200 font-medium">
               Description
             </h1>
@@ -119,9 +120,30 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
                 : "Add card description"}
             </h1>
           </div>
+          {/* Image */}
+          <div className="flex gap-2 items-center mb-4">
+            <i className="fa-solid fa-image text-gray-400"></i>
+            <h1 className="text-xl py-0.5 px-2 w-[150px] transition-all duration-100 hover:bg-slate-200 font-medium">
+              Image URL
+            </h1>
+            <h1
+              suppressContentEditableWarning
+              contentEditable="true"
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  e.preventDefault();
+                  e.target.blur();
+                }
+              }}
+              ref={imageURL}
+              className="text-lg py-0.5 px-2 w-[150px] flex-1 transition-all mr-20 duration-100 hover:bg-slate-200"
+            >
+              {cardDetail.imageURL ? cardDetail.imageURL : "Add imageURL"}
+            </h1>
+          </div>
           {/* assignee */}
           <div className="flex gap-2 items-center  mb-4">
-            <i className="fa-solid fa-user-group text-gray-400"></i>
+            <i className="fa-solid fa-user text-gray-400"></i>
             <h1 className="text-xl py-0.5 px-2 w-[150px] transition-all duration-100 hover:bg-slate-200 font-medium">
               Assignee
             </h1>
@@ -149,9 +171,9 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
               </div>
             </div>
           </div>
-          {/* Date Created */}
+          {/* Status */}
           <div className="flex gap-2 items-center mb-4">
-            <i className="fa-solid fa-heading text-gray-400"></i>
+            <i className="fa-solid fa-s text-gray-400"></i>
             <h1 className="text-xl py-0.5 px-2 w-[150px] transition-all duration-100 hover:bg-slate-200 font-medium">
               Status
             </h1>
@@ -202,7 +224,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
           </div>
           {/* Date Created */}
           <div className="flex gap-2 items-center  mb-4">
-            <i className="fa-solid fa-user-group text-gray-400"></i>
+            <i className="fa-solid fa-calendar text-gray-400"></i>
             <h1 className="text-xl py-0.5 px-2 w-[150px] transition-all duration-100 hover:bg-slate-200 font-medium">
               Date
             </h1>
@@ -217,7 +239,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
           </div>
           {/* Deadline */}
           <div className="flex gap-2 items-center  mb-4">
-            <i className="fa-solid fa-user-group text-gray-400"></i>
+            <i className="fa-solid fa-calendar-check text-gray-400"></i>
             <h1 className="text-xl py-0.5 px-2 w-[150px] transition-all duration-100 hover:bg-slate-200 font-medium">
               Deadline
             </h1>
