@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import ironman from "../images/ironman.jpg";
 import hulk from "../images/hulk.jpg";
 import batman from "../images/batman.jpg";
-import { updateCard } from "./firebase";
 import { updateCardLocally } from "./redux/cardActions";
 import { useDispatch } from "react-redux";
 const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {

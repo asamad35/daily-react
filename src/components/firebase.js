@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import uniqid from "uniqid";
 import { initializeApp } from "firebase/app";
+import data from "../data";
 import {
   getFirestore,
   collection,
@@ -31,70 +32,129 @@ initializeApp(firebaseConfig);
 // get database
 export const db = getFirestore();
 
+// const database = getDatabase();
+// const connectedRef = ref(database, ".info/connected");
+// onValue(connectedRef, (snap) => {
+//   if (snap.val() === true) {
+//     console.log("connected");
+//   } else {
+//     console.log("not connected");
+//   }
+// });
+
 const mainListsRef = collection(db, "main lists");
-
 // update firebase state
-export const updateFirebaseDocument = (state, boardId) => {
-  // if (boardId === 0) return;
-  getDocs(mainListsRef).then((snapshot) => {
-    const document = snapshot.docs.find((doc) => doc.data().id === boardId);
-    const docRef = doc(db, "main lists", document.id);
-    getDoc(docRef).then((doc) => {
-      updateDoc(docRef, {
-        ...doc.data(),
-        ...state[boardId],
-      });
-    });
-  });
-};
+// export const updateFirebaseDocument = (state, boardId) => {
+//   // if (boardId === 0) return;
+//   getDocs(mainListsRef).then((snapshot) => {
+//     const document = snapshot.docs.find((doc) => doc.data().id === boardId);
+//     const docRef = doc(db, "main lists", document.id);
+//     getDoc(docRef).then((doc) => {
+//       updateDoc(docRef, {
+//         ...doc.data(),
+//         ...state[boardId],
+//       });
+//     });
+//   });
+// };
 
-// add board in firebase
-export const addBoardFirebase = (index) => {
-  addDoc(mainListsRef, {
-    title: "New Board",
-    id: index,
-    listCollection: [],
-  });
-};
+// // add board in firebase
+// export const addBoardFirebase = (index) => {
+//   addDoc(mainListsRef, {
+//     title: "New Board",
+//     id: index,
+//     listCollection: [],
+//   });
+// };
 
-// remove board in firebase
-export const removeBoardFirebase = (id) => {
-  if (id === 0) return;
-  getDocs(mainListsRef).then((snapshot) => {
-    // const document = snapshot.docs.find((doc) => doc.data().id === id);
-    const targetBoardId = snapshot.docs.find(
-      (boardRef) => boardRef.data().id === id
-    ).id;
-    const docRef = doc(db, "main lists", targetBoardId);
+// // remove board in firebase
+// export const removeBoardFirebase = (id) => {
+//   if (id === 0) return;
+//   getDocs(mainListsRef).then((snapshot) => {
+//     // const document = snapshot.docs.find((doc) => doc.data().id === id);
+//     const targetBoardId = snapshot.docs.find(
+//       (boardRef) => boardRef.data().id === id
+//     ).id;
+//     const docRef = doc(db, "main lists", targetBoardId);
 
-    deleteDoc(docRef).then((res) => orderingBoardIdFirebase());
-  });
-};
+//     deleteDoc(docRef).then((res) => orderingBoardIdFirebase());
+//   });
+// };
 
-// ordering board id in firebase
-export const orderingBoardIdFirebase = () => {
-  getDocs(mainListsRef).then((snapshot) => {
-    snapshot.docs.forEach((board, index) => {
-      const boardId = board.id;
-      const docRef = doc(db, "main lists", boardId);
-      updateDoc(docRef, {
-        ...board.data(),
-        id: index,
-      });
-    });
-  });
-};
+// // ordering board id in firebase
+// export const orderingBoardIdFirebase = () => {
+//   getDocs(mainListsRef).then((snapshot) => {
+//     snapshot.docs.forEach((board, index) => {
+//       const boardId = board.id;
+//       const docRef = doc(db, "main lists", boardId);
+//       updateDoc(docRef, {
+//         ...board.data(),
+//         id: index,
+//       });
+//     });
+//   });
+// };
 
-export const updateBoardTitleFirebase = (boardId, boardTitle) => {
-  if (boardId === 0) return;
-  getDocs(mainListsRef).then((snapshot) => {
-    const document = snapshot.docs.find((board) => board.data().id === boardId);
-    console.log(document.data());
-    const docRef = doc(db, "main lists", document.id);
-    updateDoc(docRef, {
-      ...document.data(),
-      title: boardTitle,
-    });
-  });
-};
+// export const updateBoardTitleFirebase = (boardId, boardTitle) => {
+//   if (boardId === 0) return;
+//   getDocs(mainListsRef).then((snapshot) => {
+//     const document = snapshot.docs.find((board) => board.data().id === boardId);
+//     console.log(document.data());
+//     const docRef = doc(db, "main lists", document.id);
+//     updateDoc(docRef, {
+//       ...document.data(),
+//       title: boardTitle,
+//     });
+//   });
+// };
 //
+
+// const firstEl = {
+//   id: 0,
+// listCollection: [{…}],
+// title: "Demo",
+// };
+
+export const saveInFirebase = (boardArray) => {
+  boardArray.shift();
+  boardArray.unshift(data);
+  const p1 = getDocs(mainListsRef).then((snapshot) => {
+    const documents = snapshot.docs.map((board) => board.id);
+    documents.forEach((boardId) => {
+      const boardRef = doc(db, "main lists", boardId);
+      deleteDoc(boardRef);
+    });
+    boardArray.forEach((board, index) => {
+      addDoc(mainListsRef, {
+        ...board,
+      });
+    });
+  });
+
+  var p2 = new Promise(function (resolve, reject) {
+    setTimeout(resolve, 1000, "one");
+  });
+  Promise.race([p1, p2]).then((value) => {
+    var ifConnected = window.navigator.onLine;
+
+    if (value === "one") {
+      const spinner = document.querySelector(".spinner");
+      const saveFailed = document.querySelector(".saveFailed");
+      spinner.classList.add("hidden");
+      saveFailed.classList.remove("hidden");
+      return;
+    }
+    if (ifConnected) {
+      const spinner = document.querySelector(".spinner");
+      const saved = document.querySelector(".saved");
+      spinner.classList.add("hidden");
+      saved.classList.remove("hidden");
+    } else {
+      const spinner = document.querySelector(".spinner");
+      const saveFailed = document.querySelector(".saveFailed");
+      spinner.classList.add("hidden");
+      saveFailed.classList.remove("hidden");
+      return;
+    }
+  });
+};

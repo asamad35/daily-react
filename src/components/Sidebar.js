@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import data from "../data";
+// import data from "../data";
 import {
   getMainList,
   updateBoardTitle,

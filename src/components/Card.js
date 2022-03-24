@@ -11,6 +11,8 @@ const Card = ({ cardID, index, cardDetail, listID, list }) => {
   const disptach = useDispatch();
   const [isPopupOpen, setPopup] = useState(false);
 
+  console.log("card");
+
   const character =
     cardDetail.assignee === "ironman" || cardDetail.assignee === "Ironman"
       ? ironman

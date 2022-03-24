@@ -1,18 +1,4 @@
 import { CONSTANTS } from "./CONSTANTS";
-import { db } from "../firebase";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-  doc,
-  getDoc,
-  updateDoc,
-  orderBy,
-  serverTimestamp,
-  query,
-} from "firebase/firestore";
 
 export const addCardLocally = (e) => ({
   type: CONSTANTS.ADD_CARD_LOCALLY,

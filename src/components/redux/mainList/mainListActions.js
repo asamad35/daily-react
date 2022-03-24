@@ -35,3 +35,8 @@ export const updateBoardTitle = (e, title) => ({
   type: CONSTANTS.UPDATE_BOARD_TITLE,
   payload: { e, title },
 });
+
+export const saveInFirebase = (payload) => ({
+  type: CONSTANTS.SAVE_IN_FIREBASE,
+  payload,
+});

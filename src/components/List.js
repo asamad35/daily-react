@@ -1,8 +1,6 @@
 import React, { useRef } from "react";
 import Card from "./Card";
 import { Droppable } from "react-beautiful-dnd";
-import { removeList, addCard } from "./firebase";
-// import { updateListHeading } from "./firebase";
 import { addCardLocally } from "./redux/cardActions";
 import { updateListHeading, removeListLocally } from "./redux/listActions";
 import { useDispatch } from "react-redux";
@@ -10,6 +8,7 @@ const List = ({ listID, index, cards, list }) => {
   const dispatch = useDispatch();
 
   const heading = useRef(null);
+  console.log("list");
   return (
     <div>
       {/* heading */}

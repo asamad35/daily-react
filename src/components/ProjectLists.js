@@ -5,10 +5,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { getMainList } from "./redux/mainList/mainListActions";
 import { addListLocally } from "./redux/listActions";
 import { handleDragDrop } from "./redux/cardActions";
-// import { boardId } from "./redux/mainList/mainListReducer";
+import { saveInFirebase } from "./redux/mainList/mainListActions";
 const ProjectLists = ({ boardId }) => {
   const dispatch = useDispatch();
-
+  console.log("project list");
+  const spinnerDiv = document.querySelector(".spinnerDiv");
   // dispatching
   useEffect(() => {
     dispatch(getMainList());
@@ -42,10 +43,20 @@ const ProjectLists = ({ boardId }) => {
   };
   return (
     <div className="ml-16">
-      <h1 className="text-5xl font-semibold mt-14 mb-8">
-        {mainList[boardId]?.title}
-      </h1>
-
+      <div className="flex justify-between max-w-4xl">
+        <h1 className="text-5xl font-semibold mt-14 mb-8">
+          {mainList[boardId]?.title}
+        </h1>
+        <div
+          onClick={() => {
+            spinnerDiv.classList.remove("hidden");
+            dispatch(saveInFirebase(mainList));
+          }}
+          className="h-[50px]  bg-[#2E4ACD] px-8 text-white mt-12  cursor-pointer rounded-lg flex items-center justify-center "
+        >
+          <i className="fa-solid fa-save mr-4"></i> Save Progress
+        </div>
+      </div>
       <p className="font-medium mb-8">
         Use{" "}
         <span className="bg-[#F2F3F5] w-[60px] rounded-md border-[#2E4ACD] border-2 border-dashed  px-2 mx-1 inline-flex items-center justify-center  ">
