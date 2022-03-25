@@ -74,8 +74,8 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
         }}
         className="fixed z-20 top-0 left-0 bg-black opacity-30 h-screen w-screen"
       ></div>
-      <div className="fixed z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-4xl w-[80%] h-[80%] rounded-[2.5rem] bg-white ">
-        <div className="pt-16 pl-16 flex flex-col gap-4 ">
+      <div className="fixed z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-4xl w-[80%] rounded-[2.5rem] bg-white ">
+        <div className="p-16 flex flex-col gap-4 ">
           {/* heading */}
           <div className="flex gap-2 items-center mb-4">
             <i className="fa-solid fa-heading text-gray-400"></i>
@@ -92,7 +92,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
                 }
               }}
               ref={heading}
-              className="text-lg py-0.5 px-2 w-[150px] flex-1 transition-all mr-20 duration-100 hover:bg-slate-200"
+              className="text-lg py-0.5 px-2 flex-1 transition-all  duration-100 hover:bg-slate-200"
             >
               {cardDetail.heading ? cardDetail.heading : "Add card heading"}
             </h1>
@@ -113,7 +113,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
                 }
               }}
               ref={description}
-              className="text-lg py-0.5 px-2 w-[150px] flex-1 transition-all mr-20 duration-100 hover:bg-slate-200"
+              className="text-lg py-0.5 px-2 flex-1 transition-all max-h-32 overflow-y-scroll duration-100 hover:bg-slate-200"
             >
               {cardDetail.description
                 ? cardDetail.description
@@ -136,7 +136,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
                 }
               }}
               ref={imageURL}
-              className="text-lg py-0.5 px-2 w-[150px] flex-1 transition-all mr-20 duration-100 hover:bg-slate-200"
+              className="text-lg py-0.5 px-2 flex-1 transition-all max-h-36 overflow-hidden  duration-100 hover:bg-slate-200"
             >
               {cardDetail.imageURL ? cardDetail.imageURL : "Add imageURL"}
             </h1>
@@ -147,7 +147,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
             <h1 className="text-xl py-0.5 px-2 w-[150px] transition-all duration-100 hover:bg-slate-200 font-medium">
               Assignee
             </h1>
-            <div className=" hover:bg-slate-200 transition-all duration-100 flex-1 mr-20">
+            <div className=" hover:bg-slate-200 transition-all duration-100 flex-1">
               <div className="flex items-center gap-2">
                 <img
                   className="w-[30px] h-[30px] flex rounded-full overflow-hidden"
@@ -187,7 +187,7 @@ const PopUp = ({ isPopupOpen, setPopup, listid, cardid, cardDetail }) => {
                 }
               }}
               ref={status}
-              className="text-lg py-0.5 px-2 w-[150px] flex-1 transition-all mr-20 duration-100 hover:bg-slate-200"
+              className="text-lg py-0.5 px-2 flex-1 transition-all  duration-100 hover:bg-slate-200"
             >
               {cardDetail.status ? cardDetail.status : "Add status"}
             </h1>
