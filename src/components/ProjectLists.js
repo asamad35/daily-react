@@ -46,6 +46,9 @@ const ProjectLists = ({ boardId }) => {
       <div className="flex justify-between max-w-4xl">
         <h1 className="text-5xl font-semibold mt-14 mb-8">
           {mainList[boardId]?.title || "Select a board"}
+          {mainList[boardId]?.title === "❤️ Demo" && (
+            <span className="text-xl pl-4 ">(Not editable)</span>
+          )}
         </h1>
         <div
           onClick={() => {
@@ -63,7 +66,7 @@ const ProjectLists = ({ boardId }) => {
         <span className="bg-[#F2F3F5] w-[60px] rounded-md border-[#2E4ACD] border-2 border-dashed  px-2 mx-1 inline-flex items-center justify-center  ">
           +
         </span>{" "}
-        button to add more tasks. Firebase takes a moment to save your work.
+        button to add more tasks. Firebase takes a moment to save your work.{" "}
       </p>
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex gap-8 ">

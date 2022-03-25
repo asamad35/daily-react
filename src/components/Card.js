@@ -10,7 +10,6 @@ import { removeCardLocally } from "./redux/cardActions";
 const Card = ({ cardID, index, cardDetail, listID, list }) => {
   const disptach = useDispatch();
   const [isPopupOpen, setPopup] = useState(false);
-  console.log(cardDetail.imageURL);
   const character =
     cardDetail.assignee === "ironman" || cardDetail.assignee === "Ironman"
       ? ironman
@@ -54,12 +53,13 @@ const Card = ({ cardID, index, cardDetail, listID, list }) => {
           >
             <div className="bg-white rounded-lg cursor-pointer overflow-hidden">
               {/* img */}
+
               <div
                 onClick={() => {
                   setPopup(!isPopupOpen);
                 }}
                 className={`${
-                  cardDetail.imageURL
+                  cardDetail.imageURL && cardDetail.imageURL !== "Add imageURL"
                     ? "p-4 max-h-[200px] max-w-[300px] flex m-auto "
                     : "hidden"
                 }`}
